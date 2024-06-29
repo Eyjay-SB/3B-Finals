@@ -9,19 +9,40 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
-            $table->id();
-            $table->morphs('tokenable');
-            $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable();
-            $table->timestamps();
-        });
+// CreateStudentsTable migration
+Schema::create('students', function (Blueprint $table) {
+    $table->id();
+    $table->string('firstname');
+    $table->string('lastname');
+    $table->date('birthdate');
+    $table->string('sex');
+    $table->string('address');
+    $table->integer('year');
+    $table->string('course');
+    $table->string('section');
+    $table->timestamps();
+});
+
+// CreateSubjectsTable migration
+Schema::create('subjects', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('student_id')->constrained()->onDelete('cascade');
+    $table->string('subject_code');
+    $table->string('name');
+    $table->text('description')->nullable();
+    $table->string('instructor');
+    $table->string('schedule');
+    $table->json('grades');
+    $table->double('average_grade');
+    $table->string('remarks');
+    $table->date('date_taken');
+    $table->timestamps();
+});
+
     }
+    
 
     /**
      * Reverse the migrations.
